@@ -1,1 +1,38 @@
+from fetchers.earthquake import EarthquakeDataFetcher
+from fetchers.weather import WeatherDataFetcher
+from fetchers.reddit import RedditMonitor
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Automatically loads from .env
+
+weather_api = os.getenv("weather_api")
+client_id=os.getenv("redit_client_id")
+client_sec=os.getenv("redit_client_secret")
+username= os.getenv("redit_username")
+password= os.getenv("redit_password")
+
+def main():
+    print("🚀 Starting Day 1: Data Fetching\n")
+
+    eq = EarthquakeDataFetcher()
+    eq.fetch()
+
+    weather = WeatherDataFetcher(api_key=weather_api)
+    weather.fetch()
+    
+    reddit = RedditMonitor(
+    client_id= client_id ,
+    client_secret=  client_sec ,
+    username= username ,
+    password= password 
+    )
+    reddit.fetch()
+
+
+    print("\n🎉 All data fetched successfully. Check the 'data/' folder!")
+
+if __name__ == "__main__":
+    main()
+
 
