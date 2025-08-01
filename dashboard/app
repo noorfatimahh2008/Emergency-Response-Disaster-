@@ -1,0 +1,21 @@
+import os
+import sys
+from flask import Flask, render_template
+
+# Add db path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'db')))
+
+from incident_db import IncidentDB
+
+app = Flask(__name__)
+
+@app.route("/")
+def dashboard():
+    # Har request ke liye naya connection
+    db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'disasters.db'))
+    incident_db = IncidentDB(db_path=db_path)
+    incidents = incident_db.query_by_type("Earthquake")  # ya get_all()
+    return render_template("dashboard.html", incidents=incidents)
+
+if __name__ == "__main__":
+    app.run(debug=True)
